@@ -4,6 +4,7 @@ import { ApiErrors } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
+// add task 
 const addTask = asyncHandler(async (req, res) => {
   const { taskName, taskDescription } = req?.body;
   if (!taskName) {
@@ -23,10 +24,36 @@ const addTask = asyncHandler(async (req, res) => {
   if (!tasks) {
     throw new ApiErrors(400, "error while fetcing tasks");
   }
-  return res
-  .status(200)
-  .json(new ApiResponse(200, tasks, "success"))
+  return res.status(200).json(new ApiResponse(200, tasks, "success"));
 });
 
+// Change the status of the task
+const taskStatus = asyncHandler(async (req, res) => {
+ try {
+     const { taskId } = req?.params;
+     const { isCompleted } = req?.body; 
 
-export{addTask}
+     const task = await Task.findOneAndUpdate(taskId, {
+        isCompleted:isCompleted
+     },{
+        new:true
+     })
+     return res
+     .status(200)
+     .json(new ApiResponse(200, task))
+ } catch (error) {
+    throw new ApiErrors(400, "error while changing the status of the Task")
+ }
+
+});
+
+// delete task
+const deleteTask = asyncHandler(async (req,res) => {
+  
+    const {taskId} = req?.params;
+    await Task.deleteOne({_id : taskId})
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {}))
+})
+export { addTask, taskStatus , deleteTask};
