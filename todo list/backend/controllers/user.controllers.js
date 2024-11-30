@@ -5,8 +5,9 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 
 // options to secure teh cookies
 const options = {
-  httponly: true,
-  secure: true,
+  // httponly: true,
+  secure: false,
+  samesite:"None"
 };
 // genrate Tokens
 const genrateAccessAndRefreshToken = async (userId) => {
@@ -84,6 +85,16 @@ const userLogin = asyncHandler(async (req, res) => {
         tasks: "$tasks",
       },
     },
+    {
+      $project:{
+        username:1,
+        tasks:1,
+        email:1,
+        _id:1,
+        refreshToken:1
+
+      }
+    }
   ]);
   return res
     .status(200)
