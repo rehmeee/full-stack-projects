@@ -71,7 +71,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="container mx-auto min-h-full p-4">
+    <div className="container mx-auto min-h-full w-1/2 p-4">
       <h1 className="text-2xl text-black font-bold mb-4">Dashboard</h1>
       {data.length === 0 ? (
         <p>No tasks available.</p>
@@ -110,7 +110,7 @@ const Dashboard = () => {
         </ul>
       )}
       <button
-        className="bg-slate-500 fixed bottom-4 right-4 hover:bg-slate-600"
+        className="bg-slate-300 fixed bottom-10 right-60 hover:bg-slate-600"
         onClick={() => navigate("/add-task")}
       >
         Add Task
