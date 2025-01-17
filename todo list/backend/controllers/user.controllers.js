@@ -5,9 +5,9 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 
 // options to secure teh cookies
 const options = {
-  // httponly: true,
-  secure: false,
-  samesite:"None"
+  httpOnly: true,
+  secure: true
+  
 };
 // genrate Tokens
 const genrateAccessAndRefreshToken = async (userId) => {
@@ -65,7 +65,7 @@ const userLogin = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await genrateAccessAndRefreshToken(
     user?._id
   );
-
+  
   const userWithTasks = await User.aggregate([
     {
       $match: {
@@ -92,18 +92,19 @@ const userLogin = asyncHandler(async (req, res) => {
         email:1,
         _id:1,
         refreshToken:1
-
+        
       }
     }
   ]);
+  console.log(userWithTasks);
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, userWithTasks[0], "successfully Logind"));
-});
+  });
 
-// user logout
+  // user logout
 const userLogout = asyncHandler(async (req, res) => {
   const user = await User.findById(req?.user._id);
   if (!user) {

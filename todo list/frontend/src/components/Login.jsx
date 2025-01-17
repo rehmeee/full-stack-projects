@@ -33,6 +33,7 @@ const Login = ({ handlesetData }) => {
           withCredentials:true
         }
       );
+      console.log(response)
       if (response.status === 200) {
         // console.log(response.data)
 
